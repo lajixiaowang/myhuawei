@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/details.css">
+    <script src="./jquery.js"></script>
+    <script src="../js/cookie.js"></script>
+    <script>
+        $(function() {
+            //console.log($('.details-right input'));
+            //数据替换
+            $('.details-right input').val(0);
+            var id = location.search.split('=')[1];
+
+            $.ajax({
+                type: "get",
+                url: "../php/details.php",
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(data);
+                    var pic = JSON.parse(data.pic);
+                    // console.log(pic);
+                    var template = `
+                    <div class="pic-left"><img src="../${pic[0].src}" alt="" style="width:480px;height:480px;"></div>
+                    
+                    <div class="details-right">
+                       <h2>${data.details1}</h2>
+                       <span>抢购价:<b class="money">￥${data.price}</b></span>
+                       <i class="incr">+</i><input type="text" style="text-align: center;font-size: 20px;line-height: 8px;font-weight:bolder;"><i class="decr">-</i>
+                       <a href="./shopCar.html" class="aaa">加入购物车</a>
+                    </div>
+                    `;
+                    $('.detail-center').append(template).find($('i')).on('click', function() {
+                        var input_val = Number($('.details-right input').val());
+                        var index = $('i').index(this);
+                        console.log(index);
+                        // console.log($('i')[0]);
+                        if (index === 0) {
+                            $('.details-right i').bind("selectstart", function() {
+                                return false;
+                            });
+
+                            $('.details-right input').val(input_val + 1);
+
+                        } else {
+                            if (input_val >= 1) {
+                                $('.details-right input').val(input_val - 1);
+                            }
+                        }
+
+
+                    });
+
+                    $('.details-right').find('a').on('click', function() {
+                        //console.log(123);
+                        addshopCar(data.id, data.price, $('.details-right input').val());
+                    });
+
+                }
+            });
+
+            function addshopCar(id, price, num) {
+                var shop = cookie.get('shop');
+                var product = {
+                    "id": id,
+                    "price": price,
+                    "num": num
+                };
+                if (shop) {
+                    shop = JSON.parse(shop);
+                    if (shop.some(elm => elm.id == id)) {
+                        shop.forEach(function(elm, i) {
+                            elm.id == id ? elm.num = num : null;
+                        });
+                    } else {
+                        shop.push(product);
+                    }
+                    cookie.set('shop', JSON.stringify(shop), 1);
+
+                } else {
+                    shop = [];
+                    shop.push(product);
+                    cookie.set('shop', JSON.stringify(shop), 1);
+
+                }
+                var product = JSON.stringify(product);
+
+            }
+
+        })
+    </script>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <div class="nav">
+        <div class="left">
+            <ul>
+                <li>
+                    <a href="">首页</a>
+                </li>
+                <li>
+                    <a href="">华为官网</a>
+                </li>
+                <li>
+                    <a href="">荣耀官网</a>
+                </li>
+                <li>
+                    <a href="">花粉俱乐部</a>
+                </li>
+                <li>
+                    <a href="">优码购</a>
+                </li>
+                <li>
+                    <a href="">企业购</a>
+                </li>
+                <li>
+                    <a href="">select region</a>
+                </li>
+                <li>
+                    <a href="">更多精彩</a>
+                </li>
+            </ul>
+        </div>
+        <div class="right">
+            <ul>
+                <li>
+                    <a href="./log.html">请登录</a> <a href="./huawei-reg.html"> 注册</a>
+                </li>
+                <li>
+                    <a href="">我的订单</a>
+                </li>
+                <li>
+                    <a href="">客户服务</a>
+                </li>
+                <li>
+                    <a href="">网站导航</a>
+                </li>
+                <li>
+                    <a href="">手机版</a>
+                </li>
+                <li>
+                    <a href="">购物车</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- //导航栏结束 -->
+
+    <!-- nav下面的小导航开始 -->
+    <div class="nav-down">
+        <div class="left">
+            <a href=""><img src="../img/red.png" alt=""></a>
+            <ul>
+                <li class="icon">
+                    <a href=""><img src="../img/11.png" alt=""></a>
+                </li>
+                <li class="icon">
+                    <a href=""><img src="../img/22.png" alt=""></a>
+                </li>
+                <li>
+                    <a href="">华为P30</a>
+                </li>
+                <li>
+                    <a href="">荣耀P20</a>
+                </li>
+                <li>
+                    <a href="">Mate20 系列</a>
+                </li>
+                <li>
+                    <a href="">荣耀V20</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="right">
+            <input type="text" placeholder="超级618     HUAWEI P30">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+    </div>
+    <!-- 细节开始 -->
+    <div class="detail-center">
+        <!-- <div class="pic-left"><img src="../img/data4.png" alt=""></div>
+        <div class="details-right">
+            <h2>荣耀V20 麒麟980 魅眼全视屏 4800万AI超清摄影 全网通6GB+128GB 标配版 幻夜黑</h2>
+            <span>抢购价:<b class="money">￥2699</b></span>
+            <i class="incr">+</i><input type="text" min="1" style="text-align: center;font-size: 20px;line-height: 8px;font-weight:bolder;"><i class="decr">-</i>
+            <a href="./shopCar.html">加入购物车</a>
+        </div> -->
+    </div>
+</body>
+
+
+</html>-+

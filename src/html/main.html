@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="jquery.js"></script>
+    <script src="../js/banner.js"></script>
+    <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <!--[if lt IE 9]>
+              <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+              <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+            <![endif]-->
+    <link rel="stylesheet" href="../css/main.css">
+    <script>
+        $(function() {
+            $.ajax({
+                type: "get",
+                url: "../php/main.php",
+                dataType: "json",
+                success: function(data) {
+                    //console.log(data);
+                    var ul_up = $('.inner-right>.up>ul');
+                    var ul_down = $('.inner-right>.down>ul');
+                    var template = '';
+                    var template1 = '';
+                    data.forEach(function(elm, i) {
+                        //console.log(elm);
+                        var pic = JSON.parse(elm.pic);
+                        // console.log(pic, i);
+                        if (elm.id <= 4) {
+                            template = `
+                        <li>
+                             <a href="details.html?id=${elm.id}">
+                                    <span><img src="../${pic[0].src}" alt=""></span>
+                                     <span>${elm.title}</span><span>${elm.details}</span>
+                                     <span>￥${elm.price}</span>
+                             </a>
+                        </li>                                            
+                        `;
+                            ul_up.append(template);
+                        } else {
+                            template1 = `
+                        <li>
+                             <a href="details.html?id=${elm.id}">
+                                    <span><img src="../${pic[0].src}" alt=""></span>
+                                     <span>${elm.title}</span><span>${elm.details}</span>
+                                     <span>￥${elm.price}</span>
+                             </a>
+                        </li>                                            
+                        `;
+                            ul_down.append(template1);
+                        }
+
+                    });
+
+                }
+            });
+            // console.log($('.inner-right').find('li'));
+
+            // $('.inner-right').find('li').hover(function() {
+            //         $(this).animate({
+            //             'width': '234',
+            //             'height': '294'
+            //         }, 100)
+            //     },
+            //     function() {
+            //         $(this).animate({
+            //             'width': '230',
+            //             'height': '290'
+            //         }, 100)
+            //     });
+
+            // $('.inner-left li').on({
+            //     mouseenter: function() {
+            //         $(this).css('width', '100px');
+            //     },
+            //     mouseleave: function() {
+            //         $(this).css('background', '');
+            //     }
+            // });
+
+
+        });
+    </script>
+
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <div class="nav">
+        <div class="left">
+            <ul>
+                <li>
+                    <a href="">首页</a>
+                </li>
+                <li>
+                    <a href="">华为官网</a>
+                </li>
+                <li>
+                    <a href="">荣耀官网</a>
+                </li>
+                <li>
+                    <a href="">花粉俱乐部</a>
+                </li>
+                <li>
+                    <a href="">优码购</a>
+                </li>
+                <li>
+                    <a href="">企业购</a>
+                </li>
+                <li>
+                    <a href="">select region</a>
+                </li>
+                <li>
+                    <a href="">更多精彩</a>
+                </li>
+            </ul>
+        </div>
+        <div class="right">
+            <ul>
+                <li>
+                    <a href="./log.html">请登录</a> <a href="./huawei-reg.html"> 注册</a>
+                </li>
+                <li>
+                    <a href="">我的订单</a>
+                </li>
+                <li>
+                    <a href="">客户服务</a>
+                </li>
+                <li>
+                    <a href="">网站导航</a>
+                </li>
+                <li>
+                    <a href="">手机版</a>
+                </li>
+                <li>
+                    <a href="">购物车</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- //导航栏结束 -->
+
+    <!-- nav下面的小导航开始 -->
+    <div class="nav-down">
+        <div class="left">
+            <a href=""><img src="../img/red.png" alt=""></a>
+            <ul>
+                <li class="icon">
+                    <a href=""><img src="../img/11.png" alt=""></a>
+                </li>
+                <li class="icon">
+                    <a href=""><img src="../img/22.png" alt=""></a>
+                </li>
+                <li>
+                    <a href="">华为P30</a>
+                </li>
+                <li>
+                    <a href="">荣耀P20</a>
+                </li>
+                <li>
+                    <a href="">Mate20 系列</a>
+                </li>
+                <li>
+                    <a href="">荣耀V20</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="right">
+            <input type="text" placeholder="超级618     HUAWEI P30">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+    </div>
+    <!-- banner图开始 -->
+    <div class="main-center">
+        <div class="banner">
+            <ul class="pic_all">
+                <li class="pic1"></li>
+                <li class="pic2"></li>
+                <li class="pic3"></li>
+                <li class="pic4"></li>
+                <li class="pic5"></li>
+            </ul>
+            <a class="btn-left glyphicon glyphicon-menu-left"></a>
+            <a class="btn-right glyphicon glyphicon-menu-right"></a>
+        </div>
+        <!-- banner图里面的展示栏目 -->
+        <ul class="inner-nav">
+            <li>
+                <a href="" class="big">手机</a>
+                <a href="" class="smal">荣耀&nbsp;&nbsp;&nbspHUAWEI P系列</a>
+            </li>
+            <li>
+                <a href="" class="big">笔记本&平板</a>
+                <a href="" class="smal">平板电脑&nbsp;&nbsp;&nbsp笔记本电脑</a>
+            </li>
+            <li>
+                <a href="" class="big">智能穿戴</a>
+                <a href="" class="smal">手表&nbsp;&nbsp;&nbsp;&nbsp手环&nbsp;&nbspVR</a>
+            </li>
+            <li>
+                <a href="" class="big">智能家居</a>
+                <a href="" class="smal">路由器&nbsp;&nbsp;&nbsp电视盒子&nbsp;&nbsp;&nbsp照明</a>
+            </li>
+            <li>
+                <a href="" class="big">热销配件</a>
+                <a href="" class="smal">保护壳&nbsp;&nbsp;&nbsp移动电源&nbsp;&nbsp;&nbsp耳机</a>
+            </li>
+            <li>
+                <a href="" class="big">增值服务&其他</a>
+                <a href="" class="smal">服务器&nbsp;&nbsp;&nbspAI计算机平台</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tittle-1">热销单品</div>
+    <!-- 数据交互开始 -->
+    <div class="wrap-outer">
+        <div class="inner-left">
+            <img src="../img/data9.png" alt="" class="big-pic">
+        </div>
+        <div class="inner-right">
+            <div class="up">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="down">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="jquery.js "></script>
+    <script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js "></script>
+</body>
+
+</html>

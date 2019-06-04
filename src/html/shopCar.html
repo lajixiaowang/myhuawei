@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/shopCar.css">
+    <script src="jquery.js"></script>
+    <script src="../js/cookie.js"></script>
+    <script>
+        $(function() {
+            var shop = cookie.get('shop');
+            if (shop) {
+                shop = JSON.parse(shop);
+                var idList = shop.map(elm => elm.id).join();
+                //console.log(shop);
+            };
+            $.ajax({
+                type: "get",
+                url: "../php/Car.php",
+                data: {
+                    "idList": idList
+                },
+                dataType: "json",
+                success: function(data) {
+                    //console.log(data)
+                    var template = "";
+                    data.forEach(function(elm) {
+                        var pic = JSON.parse(elm.pic);
+                        var arr = shop.filter((val, i) => {
+                            return val.id === elm.id;
+                        });
+                        template = `
+                        <div class="car">
+                             <div class="inp"><input type="checkbox" class="in1"></div>
+                             <div><img src="../${pic[0].src}" alt="" style="width: 100px;height:100px;"></div>
+                             <div class="title"><a href="">${elm.title}</a></div>
+                             <div class="price">￥${elm.price}</div>
+                             <div class="num"><input type="text" value="${arr[0].num}"></div>
+                             <div class="all-num">￥<i>${(arr[0].num*elm.price).toFixed(2)}</i></div>
+                             <div id="${elm.id}"  class="del ${elm.id}">删除</div>
+                        </div>
+                        `;
+                        $('.car-wrap').append(template);
+
+
+                    });
+                    $(".del").on('click', function() {
+                        $(this).parent().remove();
+                        var that = $(this)[0];
+                        shop.forEach(function(elm, i) {
+                            if ($(that).attr('id') == elm.id) {
+                                console.log(elm);
+                                var index = shop.indexOf(elm);
+                                console.log(index);
+                                shop.splice(index, 1);
+                                console.log(shop);
+                                shop = JSON.stringify(shop);
+                                cookie.set('shop', shop);
+                                location.reload();
+                            }
+                        })
+                    })
+
+
+                    var alls = $('.car').find('.in1');
+                    var con = shop.length;
+                    $('.car-up').on('click', 'input', function() {
+                        var s1;
+                        if (this.checked) {
+                            var sum = 0;
+                            for (var i = 0; i < shop.length; i++) {
+                                alls[i]['checked'] = true;
+                                s1 = Number($('.car i')[i].innerHTML);
+                                sum += s1;
+                                $(".all-price i")[0].innerHTML = sum;
+                            }
+                        } else {
+                            for (var i = 0; i < shop.length; i++) {
+                                alls[i]['checked'] = false;
+                                $(".all-price i")[0].innerHTML = 0;
+                            }
+                        }
+                    })
+                    $('.car').find('.in1').on('click', function() {
+                        if (this.checked == false && $('.car-up input')[0].checked == true) {
+                            $('.car-up input')[0].checked = false;
+                        }
+                        for (var i = 0; i < shop.length; i++) {
+                            // console.log(alls[i].checked);
+                            if (alls[i].checked == false) {
+                                con = 0;
+                                console.log(con);
+                                $('.car-up input')[0].checked = false;
+
+                            } else {
+                                con = shop.length;
+                                console.log(con);
+                                $('.car-up input')[0].checked = true;
+                            }
+                        };
+
+                        var all_num = Number($(".all-price i")[0].innerHTML);
+                        var car_now = $(this).parent().parent();
+                        var num = Number(car_now.find('i')[0].innerHTML);
+                        if (this.checked) {
+                            all_num += num;
+                            $(".all-price i")[0].innerHTML = all_num;
+                        } else {
+                            all_num -= num;
+                            $(".all-price i")[0].innerHTML = all_num;
+                        }
+                    })
+
+
+
+                }
+
+            });
+
+        })
+    </script>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <div class="nav">
+        <div class="left">
+            <ul>
+                <li>
+                    <a href="">首页</a>
+                </li>
+                <li>
+                    <a href="">华为官网</a>
+                </li>
+                <li>
+                    <a href="">荣耀官网</a>
+                </li>
+                <li>
+                    <a href="">花粉俱乐部</a>
+                </li>
+                <li>
+                    <a href="">优码购</a>
+                </li>
+                <li>
+                    <a href="">企业购</a>
+                </li>
+                <li>
+                    <a href="">select region</a>
+                </li>
+                <li>
+                    <a href="">更多精彩</a>
+                </li>
+            </ul>
+        </div>
+        <div class="right">
+            <ul>
+                <li>
+                    <a href="./log.html">请登录</a> <a href="./huawei-reg.html"> 注册</a>
+                </li>
+                <li>
+                    <a href="">我的订单</a>
+                </li>
+                <li>
+                    <a href="">客户服务</a>
+                </li>
+                <li>
+                    <a href="">网站导航</a>
+                </li>
+                <li>
+                    <a href="">手机版</a>
+                </li>
+                <li>
+                    <a href="">购物车</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="nav-down">
+        <div class="left">
+            <a href=""><img src="../img/red.png" alt=""></a>
+            <ul>
+                <li class="icon">
+                    <a href=""><img src="../img/11.png" alt=""></a>
+                </li>
+                <li class="icon">
+                    <a href=""><img src="../img/22.png" alt=""></a>
+                </li>
+                <li>
+                    <a href="">华为P30</a>
+                </li>
+                <li>
+                    <a href="">荣耀P20</a>
+                </li>
+                <li>
+                    <a href="">Mate20 系列</a>
+                </li>
+                <li>
+                    <a href="">荣耀V20</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="right">
+            <input type="text" placeholder="超级618     HUAWEI P30">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+    </div>
+    <!-- 购物车的标签 -->
+    <div class="car-up">
+        <ul>
+            <li><input type="checkbox" class="in1"><span>全选</span> </li>
+            <li>商品</li>
+            <li>单价</li>
+            <li>数量</li>
+            <li>小计</li>
+            <li>操作</li>
+        </ul>
+    </div>
+    <div class="car-wrap">
+
+    </div>
+    <div class="all-price">
+        <a href="./aha.html" class="">点击结算</a>
+        <span>总价￥<i>0</i> 元</span>
+    </div>
+
+</body>
+
+</html>

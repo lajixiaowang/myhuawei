@@ -1,0 +1,35 @@
+@charset "utf-8";
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.banner div {
+    color: red;
+    background-color: #ccc;
+    width: 1200px;
+    height: 700px;
+}
+
+.banner div ul {
+    list-style: none;
+}
+
+.banner div ul>li {
+    float: left;
+    width: 14px;
+    border-radius: 15%;
+    -ms-border-radius: 15%;
+    -moz-border-radius: 15%;
+    -webkit-border-radius: 15%;
+    -o-border-radius: 15%;
+}
+
+.banner a {
+    text-decoration: none;
+}
+
+.banner a:hover {
+    color: red;
+    border-radius: 30%;
+}

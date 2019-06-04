@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/log.css">
+    <script src="../js/jquery.js"></script>
+    <!-- <script src="../js/log.js"></script> -->
+    <script>
+        $(function() {
+            var warn = $('<span style="color:red;font-size:12px;"></span>');
+            $(".word").after(warn);
+            var reg = /<[A-z\/]+>/;
+            $('#sub').on('click', function() {
+                //warn.empty();
+                $.ajax({
+                    type: "post",
+                    url: "../php/login.php",
+                    data: {
+                        "username": $('#user').val(),
+                        "password": $('#pwd').val()
+                    },
+                    success: function(data) {
+                        console.log(reg.test(data));
+                        if (reg.test(data)) {
+                            $('head').html(function(i, old) {
+                                console.log(123);
+                                return old + data;
+                            });
+                        } else {
+                            var js = JSON.parse(data);
+                            warn.html(js.mes);
+                        }
+                    }
+
+                });
+            })
+
+        })
+    </script>
+</head>
+
+<body>
+    <!-- nav -->
+    <div class="header">
+        <div class="hea-cen">
+            <span class="logo">
+                <img src="../img/HUAWEI.png" alt="">
+            </span>
+            <b class="word">华为商城</b>
+        </div>
+    </div>
+    <!-- 米黄色警告 -->
+    <div class="nav-down">依据《网络安全法》，为保障您的帐号安全与正常使用，请尽快绑定您的手机号，感谢您的理解及支持！</div>
+    <!-- main的背景 -->
+    <div class="main">
+        <div class="form">
+            <div class="word">
+                <span class="left">账号登陆</span>
+                <span class="right">扫码登陆</span>
+            </div>
+            <input type="text" name="username" id="user" placeholder="输入用户名">
+            <input type="password" name="password" id="pwd" placeholder="输入密码">
+            <span>短信验证码登陆</span>
+            <input type="sub" name="" id="sub" placeholder="登陆" style="cursor: pointer;color:transparent">
+        </div>
+    </div>
+</body>
+
+
+</html>
